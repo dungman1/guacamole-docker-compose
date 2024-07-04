@@ -96,7 +96,7 @@ services:
   # guacd
   guacd:
     container_name: guacd_compose
-    image: guacamole/guacd
+    image: guacamole/guacd:1.5.5
     networks:
       guacnetwork_compose:
     restart: always
@@ -111,7 +111,7 @@ services:
       POSTGRES_DB: guacamole_db
       POSTGRES_PASSWORD: 'ChooseYourOwnPasswordHere1234'
       POSTGRES_USER: guacamole_user
-    image: postgres:15.2-alpine
+    image: postgres:15.4
     networks:
       guacnetwork_compose:
     restart: always
@@ -131,7 +131,8 @@ services:
       POSTGRES_HOSTNAME: postgres
       POSTGRES_PASSWORD: 'ChooseYourOwnPasswordHere1234'
       POSTGRES_USER: guacamole_user
-    image: guacamole/guacamole
+      RECORDING_SEARCH_PATH: /var/lib/guacamole/recordings
+    image: guacamole/guacamole:1.5.5
     links:
     - guacd
     networks:
@@ -142,6 +143,8 @@ services:
 ## enable next line when using nginx
     - 8080/tcp
     restart: always
+    volumes:
+      - ./record:/var/lib/guacamole/recordings
 
 ########### optional ##############
   # nginx
